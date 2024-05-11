@@ -2,11 +2,13 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const doctorRoute = require("./routes/doctor.route");
+const patientRoute = require("./routes/patient.route");
 
 const app = express();
 app.use(express.json());
 
 app.use("/api/doctors", doctorRoute);
+app.use("/api/patients", patientRoute);
 
 app.get("/test", (req, res) => {
   res.send("API is running");

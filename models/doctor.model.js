@@ -21,12 +21,6 @@ const DoctorSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-
-    current_appointments: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
   },
 
   { timestamps: true }
