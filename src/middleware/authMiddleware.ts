@@ -27,9 +27,9 @@ const authMiddleware = async (
       (req as any).user = user;
 
       next();
-    } catch (error) {
+    } catch (error: any) {
       res.status(401);
-      res.send({ error: "Invalid token or user" });
+      res.send({ error: error.message });
     }
   } else {
     res.status(401);

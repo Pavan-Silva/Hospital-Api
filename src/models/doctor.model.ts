@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+export interface IDoctor {
+  name: string;
+  phone: string;
+  gender: string;
+  specialization?: string;
+}
+
 const DoctorSchema = new mongoose.Schema(
   {
     name: {
@@ -26,5 +33,5 @@ const DoctorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Doctor = mongoose.model("Doctor", DoctorSchema);
+const Doctor = mongoose.model<IDoctor>("Doctor", DoctorSchema);
 export default Doctor;

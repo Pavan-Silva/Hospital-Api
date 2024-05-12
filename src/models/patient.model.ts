@@ -1,5 +1,13 @@
 import mongoose from "mongoose";
 
+export interface IPatient {
+  name: string;
+  phone: string;
+  nic: string;
+  gender: string;
+  address?: string;
+}
+
 const PatientSchema = new mongoose.Schema(
   {
     name: {
@@ -31,5 +39,5 @@ const PatientSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Patient = mongoose.model("Patient", PatientSchema);
+const Patient = mongoose.model<IPatient>("Patient", PatientSchema);
 export default Patient;

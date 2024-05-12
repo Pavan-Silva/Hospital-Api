@@ -1,13 +1,20 @@
 import mongoose from "mongoose";
 
+export interface IAppointment {
+  doctorId: string;
+  patientId: string;
+  date: string;
+  time: string;
+}
+
 const AppointmentSchema = new mongoose.Schema(
   {
-    doctor_id: {
+    doctorId: {
       type: String,
       required: [true, "Doctor ID is required"],
     },
 
-    patient_id: {
+    patientId: {
       type: String,
       required: [true, "Patient ID is required"],
     },
@@ -26,5 +33,9 @@ const AppointmentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Appointment = mongoose.model("Appointment", AppointmentSchema);
+const Appointment = mongoose.model<IAppointment>(
+  "Appointment",
+  AppointmentSchema
+);
+
 export default Appointment;
