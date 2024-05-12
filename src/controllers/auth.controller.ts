@@ -3,7 +3,7 @@ import User from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
   try {
     const { username, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -20,7 +20,7 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
@@ -59,5 +59,3 @@ const login = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Login failed" });
   }
 };
-
-export { register, login };

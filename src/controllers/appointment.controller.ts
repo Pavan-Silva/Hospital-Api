@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Appointment from "../models/appointment.model";
 
-const getAppointments = async (req: Request, res: Response) => {
+export const getAppointments = async (req: Request, res: Response) => {
   try {
     const appointments = await Appointment.find();
     res.json(appointments);
@@ -10,7 +10,7 @@ const getAppointments = async (req: Request, res: Response) => {
   }
 };
 
-const getAppointmentById = async (req: Request, res: Response) => {
+export const getAppointmentById = async (req: Request, res: Response) => {
   try {
     const appointment = await Appointment.findById(req.params.id);
     res.json(appointment);
@@ -19,7 +19,25 @@ const getAppointmentById = async (req: Request, res: Response) => {
   }
 };
 
-const createAppointment = async (req: Request, res: Response) => {
+export const getAppointmentsByDoctor = async (req: Request, res: Response) => {
+  try {
+    const appointments = await Appointment.find({ doctorId: req.params.doctorId });
+    res.json(appointments);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAppointmentsByPatient = async (req: Request, res: Response) => {
+  try {
+    const appointments = await Appointment.find({ patientId: req.params.patientId });
+    res.json(appointments);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const createAppointment = async (req: Request, res: Response) => {
   try {
     const appointment = await Appointment.create(req.body);
     res.status(201).json(appointment);
@@ -28,7 +46,7 @@ const createAppointment = async (req: Request, res: Response) => {
   }
 };
 
-const updateAppointment = async (req: Request, res: Response) => {
+export const updateAppointment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const appointment = await Appointment.findByIdAndUpdate(id, req.body);
@@ -44,7 +62,7 @@ const updateAppointment = async (req: Request, res: Response) => {
   }
 };
 
-const deleteAppointment = async (req: Request, res: Response) => {
+export const deleteAppointment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const appointment = await Appointment.findByIdAndDelete(id);
@@ -57,12 +75,4 @@ const deleteAppointment = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
-};
-
-export {
-  getAppointments,
-  getAppointmentById,
-  createAppointment,
-  updateAppointment,
-  deleteAppointment,
 };

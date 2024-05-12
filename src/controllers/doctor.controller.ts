@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Doctor from "../models/doctor.model";
 
-const getDoctors = async (req: Request, res: Response) => {
+export const getDoctors = async (req: Request, res: Response) => {
   try {
     const doctors = await Doctor.find({});
     res.json(doctors);
@@ -10,7 +10,7 @@ const getDoctors = async (req: Request, res: Response) => {
   }
 };
 
-const getDoctorById = async (req: Request, res: Response) => {
+export const getDoctorById = async (req: Request, res: Response) => {
   try {
     const doctor = await Doctor.findById(req.params.id);
     res.json(doctor);
@@ -19,7 +19,7 @@ const getDoctorById = async (req: Request, res: Response) => {
   }
 };
 
-const createDoctor = async (req: Request, res: Response) => {
+export const createDoctor = async (req: Request, res: Response) => {
   try {
     const doctor = await Doctor.create(req.body);
     res.status(201).json(doctor);
@@ -28,7 +28,7 @@ const createDoctor = async (req: Request, res: Response) => {
   }
 };
 
-const updateDoctor = async (req: Request, res: Response) => {
+export const updateDoctor = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const doctor = await Doctor.findByIdAndUpdate(id, req.body);
@@ -44,7 +44,7 @@ const updateDoctor = async (req: Request, res: Response) => {
   }
 };
 
-const deleteDoctor = async (req: Request, res: Response) => {
+export const deleteDoctor = async (req: Request, res: Response) => {
   try {
     const doctor = await Doctor.findByIdAndDelete(req.params.id);
 
@@ -57,5 +57,3 @@ const deleteDoctor = async (req: Request, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-export { getDoctors, getDoctorById, createDoctor, updateDoctor, deleteDoctor };
