@@ -1,12 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const {
+import { Router } from "express";
+import {
   getPatients,
   getPatientById,
   createPatient,
   updatePatient,
   deletePatient,
-} = require("../controllers/patient.controller");
+} from "../controllers/patient.controller";
+
+const router = Router();
 
 router.get("/", getPatients);
 router.get("/:id", getPatientById);
@@ -14,4 +15,4 @@ router.post("/", createPatient);
 router.put("/:id", updatePatient);
 router.delete("/:id", deletePatient);
 
-module.exports = router;
+export default router;
