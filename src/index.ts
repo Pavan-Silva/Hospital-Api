@@ -1,14 +1,27 @@
-require("dotenv").config();
+import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import { authMiddleware } from "./middleware/authMiddleware";
+import cookieParser from "cookie-parser";
+import { authMiddleware } from "./middleware/auth";
 
 import doctorRoute from "./routes/doctor.route";
 import patientRoute from "./routes/patient.route";
 import appointmentRoute from "./routes/appointment.route";
 import authRoute from "./routes/auth.route";
 
+dotenv.config();
+
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
+app.use(cookieParser());
 app.use(express.json());
 app.use(authMiddleware);
 
@@ -22,7 +35,7 @@ app.get("/test", (req, res) => {
 });
 
 mongoose
-  .connect(process.env.MONGODB_CONN_STRING as string)
+  .connect(process.env.MONGODB_CONN_STRING || "")
   .then(() => {
     console.log("Connected to MongoDB");
 

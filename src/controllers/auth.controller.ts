@@ -43,7 +43,18 @@ const login = async (req: Request, res: Response) => {
       }
     );
 
-    res.status(200).json({ token });
+    res.cookie("auth-cookie", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      username: user.username,
+      role: user.role,
+    });
   } catch (error) {
     res.status(500).json({ error: "Login failed" });
   }

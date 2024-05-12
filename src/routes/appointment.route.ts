@@ -6,7 +6,7 @@ import {
   updateAppointment,
   deleteAppointment,
 } from "../controllers/appointment.controller";
-import { checkRole } from "../middleware/authMiddleware";
+import { checkRole } from "../middleware/auth";
 
 const router = Router();
 
