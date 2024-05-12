@@ -1,6 +1,7 @@
 require("dotenv").config();
 import express from "express";
 import mongoose from "mongoose";
+import { authMiddleware } from "./middleware/authMiddleware";
 
 import doctorRoute from "./routes/doctor.route";
 import patientRoute from "./routes/patient.route";
@@ -9,6 +10,7 @@ import authRoute from "./routes/auth.route";
 
 const app = express();
 app.use(express.json());
+app.use(authMiddleware);
 
 app.use("/api/doctors", doctorRoute);
 app.use("/api/patients", patientRoute);
