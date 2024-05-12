@@ -1,33 +1,34 @@
-const Doctor = require("../models/doctor.model");
+import { Request, Response } from "express";
+import Doctor from "../models/doctor.model";
 
-const getDoctors = async (req, res) => {
+const getDoctors = async (req: Request, res: Response) => {
   try {
     const doctors = await Doctor.find({});
     res.json(doctors);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const getDoctorById = async (req, res) => {
+const getDoctorById = async (req: Request, res: Response) => {
   try {
     const doctor = await Doctor.findById(req.params.id);
     res.json(doctor);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const createDoctor = async (req, res) => {
+const createDoctor = async (req: Request, res: Response) => {
   try {
     const doctor = await Doctor.create(req.body);
     res.status(201).json(doctor);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const updateDoctor = async (req, res) => {
+const updateDoctor = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const doctor = await Doctor.findByIdAndUpdate(id, req.body);
@@ -38,12 +39,12 @@ const updateDoctor = async (req, res) => {
 
     const updatedDoctor = await Doctor.findById(id);
     res.status(200).json(updatedDoctor);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const deleteDoctor = async (req, res) => {
+const deleteDoctor = async (req: Request, res: Response) => {
   try {
     const doctor = await Doctor.findByIdAndDelete(req.params.id);
 
@@ -52,15 +53,9 @@ const deleteDoctor = async (req, res) => {
     }
 
     res.status(200).json({ message: "Doctor deleted successfully" });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = {
-  getDoctors,
-  getDoctorById,
-  createDoctor,
-  updateDoctor,
-  deleteDoctor,
-};
+export { getDoctors, getDoctorById, createDoctor, updateDoctor, deleteDoctor };

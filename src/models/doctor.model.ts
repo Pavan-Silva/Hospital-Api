@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const DoctorSchema = new mongoose.Schema(
   {
@@ -27,4 +27,4 @@ const DoctorSchema = new mongoose.Schema(
 );
 
 const Doctor = mongoose.model("Doctor", DoctorSchema);
-module.exports = Doctor;
+export default Doctor;

@@ -2,10 +2,10 @@ require("dotenv").config();
 import express from "express";
 import mongoose from "mongoose";
 
-const doctorRoute = require("./routes/doctor.route");
-const patientRoute = require("./routes/patient.route");
-const appointmentRoute = require("./routes/appointment.route");
-const authRoute = require("./routes/auth.route");
+import doctorRoute from "./routes/doctor.route";
+import patientRoute from "./routes/patient.route";
+import appointmentRoute from "./routes/appointment.route";
+import authRoute from "./routes/auth.route";
 
 const app = express();
 app.use(express.json());
@@ -20,7 +20,7 @@ app.get("/test", (req, res) => {
 });
 
 mongoose
-  .connect(process.env.MONGODB_CONN_STRING)
+  .connect(process.env.MONGODB_CONN_STRING as string)
   .then(() => {
     console.log("Connected to MongoDB");
 

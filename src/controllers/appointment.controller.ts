@@ -1,33 +1,34 @@
-const Appointment = require("../models/appointment.model");
+import { Request, Response } from "express";
+import Appointment from "../models/appointment.model";
 
-const getAppointments = async (req, res) => {
+const getAppointments = async (req: Request, res: Response) => {
   try {
     const appointments = await Appointment.find();
     res.json(appointments);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const getAppointmentById = async (req, res) => {
+const getAppointmentById = async (req: Request, res: Response) => {
   try {
     const appointment = await Appointment.findById(req.params.id);
     res.json(appointment);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const createAppointment = async (req, res) => {
+const createAppointment = async (req: Request, res: Response) => {
   try {
     const appointment = await Appointment.create(req.body);
     res.status(201).json(appointment);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const updateAppointment = async (req, res) => {
+const updateAppointment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const appointment = await Appointment.findByIdAndUpdate(id, req.body);
@@ -38,12 +39,12 @@ const updateAppointment = async (req, res) => {
 
     const updatedAppointment = await Appointment.findById(id);
     res.status(200).json(updatedAppointment);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const deleteAppointment = async (req, res) => {
+const deleteAppointment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const appointment = await Appointment.findByIdAndDelete(id);
@@ -53,15 +54,15 @@ const deleteAppointment = async (req, res) => {
     }
 
     res.status(200).json({ message: "Appointment deleted successfully" });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = {
-  createAppointment,
-  getAppointmentById,
+export {
   getAppointments,
+  getAppointmentById,
+  createAppointment,
   updateAppointment,
   deleteAppointment,
 };

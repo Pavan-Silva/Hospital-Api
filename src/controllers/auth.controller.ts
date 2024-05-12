@@ -1,8 +1,9 @@
-const User = require("../models/user.model");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import { Request, Response } from "express";
+import User from "../models/user.model";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-const register = async (req, res) => {
+const register = async (req: Request, res: Response) => {
   try {
     const { username, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -19,7 +20,7 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
@@ -34,9 +35,13 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Authentication failed" });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET as string,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.status(200).json({ token });
   } catch (error) {
@@ -44,4 +49,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+export { register, login };
