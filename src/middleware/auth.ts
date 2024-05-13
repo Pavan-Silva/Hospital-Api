@@ -40,7 +40,7 @@ const authMiddleware = async (
   }
 };
 
-const checkRole = (roles: string[]) => {
+const checkRequiredRole = (roles: string[]) => {
   return async (req: CustomRequest, res: Response, next: NextFunction) => {
     const userRole = req.user?.role;
 
@@ -53,4 +53,4 @@ const checkRole = (roles: string[]) => {
   };
 };
 
-export { checkRole, authMiddleware };
+export { checkRequiredRole, authMiddleware };

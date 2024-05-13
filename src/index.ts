@@ -4,6 +4,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import { authMiddleware } from "./middleware/auth";
+import { errorHandler } from "./middleware/errorHandler";
 
 import doctorRoute from "./routes/doctor.route";
 import patientRoute from "./routes/patient.route";
@@ -29,6 +30,8 @@ app.use("/api/doctors", doctorRoute);
 app.use("/api/patients", patientRoute);
 app.use("/api/appointments", appointmentRoute);
 app.use("/api/auth", authRoute);
+
+app.use(errorHandler);
 
 app.get("/test", (req, res) => {
   res.send("API is running");

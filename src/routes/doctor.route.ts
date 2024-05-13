@@ -6,10 +6,10 @@ import {
   updateDoctor,
   deleteDoctor,
 } from "../controllers/doctor.controller";
-import { checkRole } from "../middleware/auth";
+import { checkRequiredRole } from "../middleware/auth";
 
 const router = Router();
-router.use(checkRole(["ADMIN"]));
+router.use(checkRequiredRole(["ADMIN"]));
 
 router.get("/", getDoctors);
 router.get("/:id", getDoctorById);

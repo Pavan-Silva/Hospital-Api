@@ -1,9 +1,14 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import User, { IUser } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { ResponseError } from "../middleware/errorHandler";
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { username, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -16,23 +21,30 @@ export const register = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Registration failed" });
+    next(new Error("User registration failed"));
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
 
+    let error: ResponseError = new Error("Authentication failed");
+    error.statusCode = 401;
+
     if (!user) {
-      return res.status(401).json({ error: "Authentication failed" });
+      throw error;
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: "Authentication failed" });
+      throw error;
     }
 
     const token = jwt.sign(
@@ -59,6 +71,6 @@ export const login = async (req: Request, res: Response) => {
       role: user.role,
     });
   } catch (error) {
-    res.status(500).json({ error: "Login failed" });
+    next(error);
   }
 };

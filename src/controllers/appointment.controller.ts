@@ -1,57 +1,89 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Appointment from "../models/appointment.model";
 import { IDoctor } from "../models/doctor.model";
+import { ResponseError } from "../middleware/errorHandler";
 
-export const getAppointments = async (req: Request, res: Response) => {
+export const getAppointments = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const appointments = await Appointment.find();
     res.json(appointments);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const getAppointmentById = async (req: Request, res: Response) => {
+export const getAppointmentById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const appointment = await Appointment.findById(req.params.id);
+
+    if (!appointment) {
+      let error: ResponseError = new Error("Appointment not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
     res.json(appointment);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const getAppointmentsByDoctor = async (req: Request, res: Response) => {
+export const getAppointmentsByDoctor = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const appointments = await Appointment.find({
       doctorId: req.params.doctorId,
     });
     res.json(appointments);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const getAppointmentsByPatient = async (req: Request, res: Response) => {
+export const getAppointmentsByPatient = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const appointments = await Appointment.find({
       patientId: req.params.patientId,
     });
     res.json(appointments);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const createAppointment = async (req: Request, res: Response) => {
+export const createAppointment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const appointment = await Appointment.create(req.body as IDoctor);
     res.status(201).json(appointment);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const updateAppointment = async (req: Request, res: Response) => {
+export const updateAppointment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { id } = req.params;
     const appointment = await Appointment.findByIdAndUpdate(
@@ -60,27 +92,35 @@ export const updateAppointment = async (req: Request, res: Response) => {
     );
 
     if (!appointment) {
-      return res.status(404).json({ message: "Appointment not found" });
+      let error: ResponseError = new Error("Appointment not found");
+      error.statusCode = 404;
+      throw error;
     }
 
     const updatedAppointment = await Appointment.findById(id);
     res.status(200).json(updatedAppointment);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const deleteAppointment = async (req: Request, res: Response) => {
+export const deleteAppointment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { id } = req.params;
     const appointment = await Appointment.findByIdAndDelete(id);
 
     if (!appointment) {
-      return res.status(404).json({ message: "Appointment not found" });
+      let error: ResponseError = new Error("Appointment not found");
+      error.statusCode = 404;
+      throw error;
     }
 
     res.status(200).json({ message: "Appointment deleted successfully" });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    next(error);
   }
 };

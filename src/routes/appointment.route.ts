@@ -8,23 +8,26 @@ import {
   getAppointmentsByDoctor,
   getAppointmentsByPatient,
 } from "../controllers/appointment.controller";
-import { checkRole } from "../middleware/auth";
+import { checkRequiredRole } from "../middleware/auth";
 
 const router = Router();
 
-router.get("/", checkRole(["ADMIN"]), getAppointments);
-router.get("/:id", checkRole(["ADMIN", "DOCTOR"]), getAppointmentById);
-
 router.get(
   "/doctor/:id",
-  checkRole(["ADMIN", "DOCTOR"]),
+  checkRequiredRole(["ADMIN", "DOCTOR"]),
   getAppointmentsByDoctor
 );
 
-router.get("/patient/:id", checkRole(["ADMIN"]), getAppointmentsByPatient);
+router.get(
+  "/patient/:id",
+  checkRequiredRole(["ADMIN"]),
+  getAppointmentsByPatient
+);
 
-router.post("/", checkRole(["ADMIN"]), createAppointment);
-router.put("/:id", checkRole(["ADMIN"]), updateAppointment);
-router.delete("/:id", checkRole(["ADMIN"]), deleteAppointment);
+router.get("/", checkRequiredRole(["ADMIN"]), getAppointments);
+router.get("/:id", checkRequiredRole(["ADMIN", "DOCTOR"]), getAppointmentById);
+router.post("/", checkRequiredRole(["ADMIN"]), createAppointment);
+router.put("/:id", checkRequiredRole(["ADMIN"]), updateAppointment);
+router.delete("/:id", checkRequiredRole(["ADMIN"]), deleteAppointment);
 
 export default router;
