@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Patient from "../models/patient.model";
+import Patient, { IPatient } from "../models/patient.model";
 
 export const getPatients = async (req: Request, res: Response) => {
   try {
@@ -21,7 +21,7 @@ export const getPatientById = async (req: Request, res: Response) => {
 
 export const createPatient = async (req: Request, res: Response) => {
   try {
-    const patient = await Patient.create(req.body);
+    const patient = await Patient.create(req.body as IPatient);
     res.status(201).json(patient);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -31,7 +31,7 @@ export const createPatient = async (req: Request, res: Response) => {
 export const updatePatient = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const patient = await Patient.findByIdAndUpdate(id, req.body);
+    const patient = await Patient.findByIdAndUpdate(id, req.body as IPatient);
 
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
