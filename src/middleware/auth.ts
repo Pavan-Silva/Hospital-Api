@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
-import User, { IUser } from "../models/user.model";
 import { NextFunction, Request, Response } from "express";
 
 interface CustomRequest extends Request {
-  user?: IUser;
+  user?: {
+    userId: string;
+    role: string;
+  };
 }
 
 const authMiddleware = async (
@@ -26,13 +28,7 @@ const authMiddleware = async (
         process.env.JWT_SECRET as string
       ) as any;
 
-      const user = await User.findById(decoded.userId).select("-password");
-
-      if (!user) {
-        throw new Error("Authentication failed, User not found");
-      }
-
-      req.user = user;
+      req.user = decoded;
       next();
     } catch (error: any) {
       res.status(401);
@@ -45,10 +41,10 @@ const authMiddleware = async (
 };
 
 const checkRole = (roles: string[]) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    const userRole = (req as any).user.role;
+  return async (req: CustomRequest, res: Response, next: NextFunction) => {
+    const userRole = req.user?.role;
 
-    if (!roles.includes(userRole)) {
+    if (!userRole || !roles.includes(userRole)) {
       res.status(403);
       res.send({ error: "Not authorized, insufficient permissions" });
     }
