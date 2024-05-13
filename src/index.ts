@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import { authMiddleware } from "./middleware/auth";
-import { errorHandler } from "./middleware/errorHandler";
+import { authMiddleware } from "./middleware/auth.middleware";
+import { errorHandler } from "./middleware/errorHandler.middleware";
 
 import doctorRoute from "./routes/doctor.route";
 import patientRoute from "./routes/patient.route";

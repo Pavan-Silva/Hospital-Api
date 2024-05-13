@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import User, { IUser } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { ResponseError } from "../middleware/errorHandler";
+import ResponseError from "../configs/ResponseError";
 
 export const register = async (
   req: Request,
@@ -34,17 +34,14 @@ export const login = async (
     const { username, password } = req.body;
     const user = await User.findOne({ username });
 
-    let error: ResponseError = new Error("Authentication failed");
-    error.statusCode = 401;
-
     if (!user) {
-      throw error;
+      throw new ResponseError(404, "Authentication failed");
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      throw error;
+      throw new ResponseError(404, "Authentication failed");
     }
 
     const token = jwt.sign(

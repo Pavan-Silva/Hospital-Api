@@ -8,7 +8,7 @@ import {
   getAppointmentsByDoctor,
   getAppointmentsByPatient,
 } from "../controllers/appointment.controller";
-import { checkRequiredRole } from "../middleware/auth";
+import { checkRequiredRole } from "../middleware/auth.middleware";
 
 const router = Router();
 

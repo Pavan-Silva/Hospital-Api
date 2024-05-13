@@ -6,7 +6,7 @@ import {
   updateDoctor,
   deleteDoctor,
 } from "../controllers/doctor.controller";
-import { checkRequiredRole } from "../middleware/auth";
+import { checkRequiredRole } from "../middleware/auth.middleware";
 
 const router = Router();
 router.use(checkRequiredRole(["ADMIN"]));

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Appointment from "../models/appointment.model";
 import { IDoctor } from "../models/doctor.model";
-import { ResponseError } from "../middleware/errorHandler";
+import ResponseError from "../configs/ResponseError";
 
 export const getAppointments = async (
   req: Request,
@@ -25,9 +25,7 @@ export const getAppointmentById = async (
     const appointment = await Appointment.findById(req.params.id);
 
     if (!appointment) {
-      let error: ResponseError = new Error("Appointment not found");
-      error.statusCode = 404;
-      throw error;
+      throw new ResponseError(404, "Appointment not found");
     }
 
     res.json(appointment);
@@ -92,9 +90,7 @@ export const updateAppointment = async (
     );
 
     if (!appointment) {
-      let error: ResponseError = new Error("Appointment not found");
-      error.statusCode = 404;
-      throw error;
+      throw new ResponseError(404, "Appointment not found");
     }
 
     const updatedAppointment = await Appointment.findById(id);
@@ -114,9 +110,7 @@ export const deleteAppointment = async (
     const appointment = await Appointment.findByIdAndDelete(id);
 
     if (!appointment) {
-      let error: ResponseError = new Error("Appointment not found");
-      error.statusCode = 404;
-      throw error;
+      throw new ResponseError(404, "Appointment not found");
     }
 
     res.status(200).json({ message: "Appointment deleted successfully" });

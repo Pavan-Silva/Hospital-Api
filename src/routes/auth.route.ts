@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { register, login } from "../controllers/auth.controller";
-import { checkRequiredRole } from "../middleware/auth";
+import { checkRequiredRole } from "../middleware/auth.middleware";
 
 const router = Router();
 

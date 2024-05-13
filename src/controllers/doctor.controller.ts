@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Doctor, { IDoctor } from "../models/doctor.model";
-import { ResponseError } from "../middleware/errorHandler";
+import ResponseError from "../configs/ResponseError";
 
 export const getDoctors = async (
   req: Request,
@@ -24,9 +24,7 @@ export const getDoctorById = async (
     const doctor = await Doctor.findById(req.params.id);
 
     if (!doctor) {
-      let error: ResponseError = new Error("Doctor not found");
-      error.statusCode = 404;
-      throw error;
+      throw new ResponseError(404, "Doctor not found");
     }
 
     res.json(doctor);
@@ -58,9 +56,7 @@ export const updateDoctor = async (
     const doctor = await Doctor.findByIdAndUpdate(id, req.body as IDoctor);
 
     if (!doctor) {
-      let error: ResponseError = new Error("Appointment not found");
-      error.statusCode = 404;
-      throw error;
+      throw new ResponseError(404, "Doctor not found");
     }
 
     const updatedDoctor = await Doctor.findById(id);
@@ -79,9 +75,7 @@ export const deleteDoctor = async (
     const doctor = await Doctor.findByIdAndDelete(req.params.id);
 
     if (!doctor) {
-      let error: ResponseError = new Error("Appointment not found");
-      error.statusCode = 404;
-      throw error;
+      throw new ResponseError(404, "Doctor not found");
     }
 
     res.status(200).json({ message: "Doctor deleted successfully" });
