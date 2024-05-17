@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Patient, { IPatient } from "../models/patient.model";
-import ResponseError from "../configs/ResponseError";
+import ResponseError from "../configs/responseError";
 
 export const getPatients = async (
   req: Request,

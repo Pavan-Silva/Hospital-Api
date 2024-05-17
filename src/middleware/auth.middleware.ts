@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
+import User, { IUser } from "../models/user.model";
+import ResponseError from "../configs/responseError";
 
 interface CustomRequest extends Request {
-  user?: {
-    userId: string;
-    role: string;
-  };
+  user?: IUser;
 }
 
 const authMiddleware = async (
@@ -28,15 +27,19 @@ const authMiddleware = async (
         process.env.JWT_SECRET as string
       ) as any;
 
-      req.user = decoded;
+      const user = await User.findById(decoded.userId).select("-password");
+
+      if (!user) {
+        throw new Error();
+      }
+
+      req.user = user;
       next();
     } catch (error: any) {
-      res.status(401);
-      res.send({ error: error.message });
+      next(new ResponseError(401, "Authentication failed"));
     }
   } else {
-    res.status(401);
-    res.send({ error: "Authentication failed" });
+    next(new ResponseError(401, "Authentication failed"));
   }
 };
 

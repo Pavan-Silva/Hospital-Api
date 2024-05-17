@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import ResponseError from "../configs/ResponseError";
+import ResponseError from "../configs/responseError";
 
 export const errorHandler = (
   error: ResponseError,

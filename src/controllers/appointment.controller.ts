@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Appointment from "../models/appointment.model";
 import { IDoctor } from "../models/doctor.model";
-import ResponseError from "../configs/ResponseError";
+import ResponseError from "../configs/responseError";
 
 export const getAppointments = async (
   req: Request,
