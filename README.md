@@ -6,3 +6,4 @@ Developed using,
 - NodeJS + Express
 - Typescript
 - MongoDB
+- JWT authentication and role-based authorization
