@@ -9,7 +9,21 @@ export const getAppointments = async (
   next: NextFunction
 ) => {
   try {
-    const appointments = await Appointment.find();
+    const appointments = await Appointment.aggregate([
+      {
+        $lookup: {
+          from: "doctors",
+          localField: "doctorId",
+          foreignField: "_id",
+          as: "doctor",
+        },
+      },
+
+      {
+        $unwind: "$doctor",
+      },
+    ]);
+
     res.json(appointments);
   } catch (error) {
     next(error);

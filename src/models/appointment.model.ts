@@ -10,7 +10,8 @@ export interface IAppointment {
 const AppointmentSchema = new mongoose.Schema(
   {
     doctorId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
       required: [true, "Doctor ID is required"],
     },
 
