@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 export interface IDoctor {
   name: string;
+  nic: string;
   phone: string;
   gender: string;
   specialization?: string;
@@ -12,6 +13,11 @@ const DoctorSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, "Name is required"],
+    },
+
+    nic: {
+      type: String,
+      required: [true, "NIC is required"],
     },
 
     phone: {
@@ -26,7 +32,7 @@ const DoctorSchema = new mongoose.Schema(
 
     specialization: {
       type: String,
-      required: false,
+      required: [true, "Specialization is required"],
     },
   },
 
