@@ -16,7 +16,8 @@ const AppointmentSchema = new mongoose.Schema(
     },
 
     patientId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
       required: [true, "Patient ID is required"],
     },
 

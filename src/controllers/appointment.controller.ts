@@ -18,10 +18,21 @@ export const getAppointments = async (
           as: "doctor",
         },
       },
-
       {
         $unwind: "$doctor",
       },
+
+      {
+        $lookup: {
+          from: "patients",
+          localField: "patientId",
+          foreignField: "_id",
+          as: "patient",
+        },
+      },
+      {
+        $unwind: "$patient",
+      }
     ]);
 
     res.json(appointments);
